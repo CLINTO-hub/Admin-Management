@@ -1,6 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Employelist = () => {
+
+     const [departmentData,setDepartmentData]=useState([])
+
+
+    useEffect(() => {
+                        const fetchDepartmentDetails = async () => {
+                          try {
+                            const response = await fetch(`${BASE_URL}/department/department`, {
+                              method: 'POST', // Use POST for sending data
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({ /* add your request body here */ }),
+                            });
+                    
+                            if (response.ok) {
+                              const result = await response.json();
+                              // Handle the result, for example:
+                              setDepartmentData(result)
+                             
+                            } else {
+                              console.error('Failed to fetch data:', response.statusText);
+                            }
+                          } catch (error) {
+                            console.error('Error fetching department details:', error);
+                          }
+                        };
+                    
+                        fetchDepartmentDetails();
+                      }, []);
+
+
   return (
     <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
       <table className="w-full text-left table-auto min-w-max">
@@ -47,20 +79,22 @@ const Employelist = () => {
           </tr>
         </thead>
         <tbody>
+        {departmentData.map((data,index)=>(
+            <>
           <tr>
             <td className="p-4 border-b border-blue-gray-50">
               <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                John Michael
+                {data.name}
               </p>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
               <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                Manager
+                {data.employe}
               </p>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
               <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                23/04/18
+                {data}
               </p>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
@@ -68,7 +102,7 @@ const Employelist = () => {
                 href="#"
                 className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900"
               >
-                Edit
+                {data}
               </a>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
@@ -76,12 +110,12 @@ const Employelist = () => {
                 href="#"
                 className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900"
               >
-                Edit
+                {data}
               </a>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
               <p className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900">
-                Edit
+               {data}
               </p>
             </td>
             <td className="p-4 border-b border-blue-gray-50 text-center">
@@ -92,6 +126,8 @@ const Employelist = () => {
               />
             </td>
           </tr>
+          </>
+        ))}
         </tbody>
       </table>
     </div>

@@ -1,8 +1,45 @@
-import React from "react"
+import React, { useState } from "react"
+import { Link,useNavigate } from 'react-router-dom'
 
 
 
 export default function Login() {
+
+
+    const navigate = useNavigate()
+
+    const [data,setData] = useState({
+        email:'',
+        password:''
+    })
+
+
+    const handleSubmit = async(e)=>{
+
+        try {
+            const response = await fetch(`${BASE_URL}/auth/login`,{
+                method:'post',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(data)
+            })
+            
+            const result = await response.json()
+            console.log('result',result.token);
+
+            if(!result.ok){
+                throw new Error(result.message)
+              }
+              navigate('/')
+
+        } catch (error) {
+            console.log(error);
+            
+            
+        }
+
+    }
 
 
     return (
@@ -28,7 +65,7 @@ export default function Login() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                   Email address
@@ -41,6 +78,8 @@ export default function Login() {
                     required
                     autoComplete="email"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    value={data.email}
+                    onChange={(e)=>setData({...data,email:e.target.value})}
                   />
                 </div>
               </div>
@@ -64,6 +103,8 @@ export default function Login() {
                     required
                     autoComplete="current-password"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    value={data.password}
+                    onChange={(e)=>setData({...data,password:e.target.value})}
                   />
                 </div>
               </div>

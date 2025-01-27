@@ -5,6 +5,8 @@ import Employelist from './components/Employelist';
 import EmployeDepartmentHead from './components/EmployeDepartmentHead';
 import DepartmentList from './components/DepartmentList';
 import DepartmentDetail from './components/DepartmentDetails';
+import HeadDetails from './components/HeadDetails';
+import EmployeeDetails from './components/EmployeeDetail';
 
 function App() {
   
@@ -17,6 +19,8 @@ function App() {
       <Route path='/employehead' element ={<EmployeDepartmentHead/>}/>
       <Route path='/departmentlist' element ={<DepartmentList/>}/>
       <Route path='/departmentDetails' element ={<DepartmentDetail/>}/>
+      <Route path='/headDetail' element ={<HeadDetails/>}/>
+      <Route path='/employeeDetail' element ={<EmployeeDetails/>}/>
     </Routes>
    </>
   )
