@@ -1,3 +1,4 @@
+import { useEffect,useState } from "react";
 import { data } from "react-router-dom";
 
 const HeadDetails = () => {
@@ -6,20 +7,19 @@ const HeadDetails = () => {
   useEffect(() => {
     const fetchDepartmentDetails = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/department/department`, {
-          method: "POST", // Use POST for sending data
+        const token = localStorage.getItem('token')
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/department-head`, {
+          method: "GET", // Use POST for sending data
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            'Authorization':`Bearer ${token}`
           },
-          body: JSON.stringify({
-            /* add your request body here */
-          }),
         });
 
         if (response.ok) {
           const result = await response.json();
           // Handle the result, for example:
-          setDepartmentData(result);
+          setDepartmentData(result.data);
         } else {
           console.error("Failed to fetch data:", response.statusText);
         }
@@ -52,17 +52,17 @@ const HeadDetails = () => {
           <>
             <tr>
               <td className="p-4 border-b">{data.name}</td>
-              <td className="p-4 border-b">{data.number}</td>
+              <td className="p-4 border-b">{data.employeeNumber}</td>
               <td className="p-4 border-b">{data.age}</td>
               <td className="p-4 border-b">
                 <img
                   alt="Profile"
-                  src="https://via.placeholder.com/50"
+                  src={`${import.meta.env.VITE_BASE_URL}/${data.image}`}
                   className="w-12 h-12 object-cover rounded-full"
                 />
               </td>
-              <td className="p-4 border-b">{data}</td>
-              <td className="p-4 border-b">{data}</td>
+              <td className="p-4 border-b">{data.departmentId}</td>
+              <td className="p-4 border-b">{data.description}</td>
             </tr>
             </>
 ))}

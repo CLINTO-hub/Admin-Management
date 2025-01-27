@@ -7,24 +7,39 @@ const EmployeDepartmentHead = () => {
 
 
 
-    const [departmentData,setDepartmentData]=useState([])
+    const [departmentData,setDepartmentData]= useState([])
 
 
       useEffect(() => {
+
+        
+
                 const fetchDepartmentDetails = async () => {
                   try {
-                    const response = await fetch(`${BASE_URL}/department/department`, {
-                      method: 'POST', // Use POST for sending data
+                    const token = localStorage.getItem('token')
+
+                    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/department-head`, {
+                      method: 'GET', // Use POST for sending data
                       headers: {
                         'Content-Type': 'application/json',
+                        'Authorization':`Bearer ${token}`
                       },
-                      body: JSON.stringify({ /* add your request body here */ }),
                     });
+
+                    if(response){
+                        const result = await response.json()
+                        console.log('result',result);
+                        
+                        setDepartmentData(result.data)
+                    }
+              
             
-                    if (response.ok) {
+                    if (response) {
                       const result = await response.json();
                       // Handle the result, for example:
-                      setDepartmentData(result)
+                      setDepartmentData(result.data)
+
+
                      
                     } else {
                       console.error('Failed to fetch data:', response.statusText);
@@ -94,12 +109,13 @@ const EmployeDepartmentHead = () => {
             </td>
             <td className="p-4 border-b border-blue-gray-50">
               <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                {data.role}
+                {data.employeeNumber
+                }
               </p>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
               <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                {data}
+                {data.age}
               </p>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
@@ -107,7 +123,7 @@ const EmployeDepartmentHead = () => {
                 href="#"
                 className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900"
               >
-                {data}
+                {data.department}
               </a>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
@@ -115,12 +131,12 @@ const EmployeDepartmentHead = () => {
                 href="#"
                 className="block font-sans text-sm antialiased font-medium leading-normal text-blue-gray-900"
               >
-                {data}
+                {data.description}
               </a>
             </td>
             <td className="p-4 border-b border-blue-gray-50 text-center">
               <img
-                src="https://via.placeholder.com/40"
+                src={`${import.meta.env.VITE_BASE_URL}/${data.image}`}
                 alt="Profile"
                 className="w-10 h-10 rounded-full mx-auto mb-2"
               />

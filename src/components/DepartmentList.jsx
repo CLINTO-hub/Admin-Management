@@ -11,20 +11,26 @@ const [departmentData,setDepartmentData]=useState([])
 
 
     useEffect(() => {
+
+        const token = localStorage.getItem('token')
+
             const fetchDepartmentDetails = async () => {
               try {
-                const response = await fetch(`${BASE_URL}/department/department`, {
-                  method: 'POST', // Use POST for sending data
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/department`, {
+                  method: 'GET', // Use POST for sending data
                   headers: {
                     'Content-Type': 'application/json',
+                    'Authorization':`Bearer ${token}`
                   },
-                  body: JSON.stringify({ /* add your request body here */ }),
                 });
+
+                console.log(response);
+                
         
                 if (response.ok) {
                   const result = await response.json();
                   // Handle the result, for example:
-                  setDepartmentData(result)
+                  setDepartmentData(result.data)
                  
                 } else {
                   console.error('Failed to fetch data:', response.statusText);
@@ -72,7 +78,7 @@ const [departmentData,setDepartmentData]=useState([])
          
           <td className="p-4 border-b border-blue-gray-50 text-center">
             <img
-              src="https://via.placeholder.com/40"
+              src={`${import.meta.env.VITE_BASE_URL}/${data.image}`}
               alt="Profile"
               className="w-10 h-10 rounded-full mx-auto mb-2"
             />

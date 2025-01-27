@@ -9,18 +9,19 @@ const EmployeeDetails = () => {
           useEffect(() => {
                     const fetchDepartmentDetails = async () => {
                       try {
-                        const response = await fetch(`${BASE_URL}/department/department`, {
-                          method: 'POST', // Use POST for sending data
+                        const token = localStorage.getItem('token')
+                        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/employee`, {
+                          method: 'GET', // Use POST for sending data
                           headers: {
                             'Content-Type': 'application/json',
+                            'Authorization':`Bearer ${token}`
                           },
-                          body: JSON.stringify({ /* add your request body here */ }),
                         });
                 
                         if (response.ok) {
                           const result = await response.json();
                           // Handle the result, for example:
-                          setDepartmentData(result)
+                          setDepartmentData(result.data)
                          
                         } else {
                           console.error('Failed to fetch data:', response.statusText);
@@ -29,7 +30,6 @@ const EmployeeDetails = () => {
                         console.error('Error fetching department details:', error);
                       }
                     };
-                
                     fetchDepartmentDetails();
                   }, []);
 
